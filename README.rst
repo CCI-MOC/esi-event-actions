@@ -1,9 +1,12 @@
-# esi-event-actions
+=================
+esi-event-actions
+=================
 
 A simple python script that listens to a messaging queue and runs scripts when
 specific events are caught.
 
-## Usage
+Usage
+-----
 
 .. code-block:: bash
 
