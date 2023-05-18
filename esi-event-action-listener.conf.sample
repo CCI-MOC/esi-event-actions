@@ -1,0 +1,13 @@
+[DEFAULT]
+user = <rabbit user>
+password = <rabbit password>
+host = <rabbit host>
+port = <rabbit port>
+queues = <queue1>,<queue2>,...
+
+# multiple action sections are allowed
+[action1]
+events = <event1>,<event2>,...
+script = <path-to-script>
+script_params = <param1>,<param2>,...     # these must be attributes on the payload dict
+filter_params = {"key1": "value1", "key2": "value2"} # the keys are attributes on the payload dict; * notation is valid
