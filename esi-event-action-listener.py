@@ -52,11 +52,11 @@ def main():
     def callback(ch, method, properties, body):
         message_json = json.loads(json.loads(body)["oslo.message"])
         event = message_json["event_type"]
-        ironic_node_data = message_json["payload"]["ironic_object.data"]
-        node_name = ironic_node_data["name"]
-        node_uuid = ironic_node_data["uuid"]
+        lease_data = message_json["payload"]["esi_leap_object.data"]
+        node_name = lease_data["node_name"]
+        node_uuid = lease_data["node_uuid"]
         print(" [x] Event %s on node %s (%s) " % (event, node_name, node_uuid))
-        print("     Node data: %r " % ironic_node_data)
+        print("     Node data: %r " % lease_data)
         if event in event_dict:
             for script_dict in event_dict[event]:
                 script = script_dict["script"]
@@ -66,7 +66,7 @@ def main():
                 print("     Checking script %s on node %s" % (script, node_name))
                 should_run = True
                 for key in filter_params:
-                    param_value = get_object_value_from_key(ironic_node_data, key)
+                    param_value = get_object_value_from_key(lease_data, key)
                     pattern = re.compile(filter_params[key])
                     print("     Filtering %s with pattern %s" % (key, pattern))
                     if not pattern.match(param_value):
@@ -76,7 +76,7 @@ def main():
                 if not should_run:
                     continue
                 for script_param in script_params:
-                    param_value = get_object_value_from_key(ironic_node_data, script_param)
+                    param_value = get_object_value_from_key(lease_data, script_param)
                     node_params.append(param_value)
                 print("     Running script %s with params %s" % (script, node_params))
                 os.system("%s %s" % (script, ' '.join(node_params)))
